@@ -5,13 +5,7 @@ use Core\Router;
 use Core\Container;
 
 require '../vendor/autoload.php';
-var_dump(
-    file_exists(__DIR__.'/../app/Http/Controllers/Admin/StudentController.php')
-);
 
-var_dump(
-    class_exists(\App\Http\Controllers\Admin\StudentController::class)
-);
 
 die();
 if (session_status() === PHP_SESSION_NONE) {
