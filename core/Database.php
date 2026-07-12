@@ -3,6 +3,7 @@
 namespace Core;
 
 use PDO;
+use PDOException;
 
 class Database
 {
@@ -10,13 +11,27 @@ class Database
 
     public function __construct(array $config)
     {
-        $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};charset=utf8mb4";
-
-        $this->pdo = new PDO(
-            $dsn,
-            $config['username'],
-            $config['password']
+        $dsn = sprintf(
+            'mysql:host=%s;port=%s;dbname=%s;charset=%s',
+            $config['host'],
+            $config['port'],
+            $config['dbname'],
+            $config['charset']
         );
+
+        try {
+            $this->pdo = new PDO(
+                $dsn,
+                $config['username'],
+                $config['password'],
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ]
+            );
+        } catch (PDOException $e) {
+            die('Database Connection Failed: ' . $e->getMessage());
+        }
     }
 
     public function connection(): PDO
