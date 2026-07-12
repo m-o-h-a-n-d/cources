@@ -19,7 +19,6 @@ use App\Http\Middleware\StudentMiddleware;
 */
 
 $router->get('/', [FrontendController::class, 'landing']);
-$router->get('/courses/details', [FrontendController::class, 'courseDetails']);
 $router->get('/logout', [AuthController::class, 'logout']);
 
 /*
