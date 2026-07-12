@@ -14,13 +14,11 @@ $isAdminArea = str_starts_with($currentPath, '/admin');
             <i class="fa-solid fa-user-graduate"></i><span class="label">Student Menu</span>
         </a>
         <div class="collapse show" id="studentMenu">
-            <a class="nav-link <?= $activePage === 'student-dashboard' ? 'active' : '' ?>" href="/student">
-                <i class="fa-solid fa-gauge"></i><span class="label">Dashboard</span>
-            </a>
-            <a class="nav-link <?= $activePage === 'courses' ? 'active' : '' ?>" href="/courses">
+          
+            <a class="nav-link <?= $activePage === 'courses' ? 'active' : '' ?>" href="/student">
                 <i class="fa-solid fa-book-open"></i><span class="label">Courses</span>
             </a>
-            <a class="nav-link <?= $activePage === 'my-courses' ? 'active' : '' ?>" href="/my-courses">
+            <a class="nav-link <?= $activePage === 'my-courses' ? 'active' : '' ?>" href="/student/my-courses">
                 <i class="fa-solid fa-calendar-check"></i><span class="label">My Courses</span>
             </a>
             <a class="nav-link <?= $activePage === 'profile' ? 'active' : '' ?>" href="/profile">

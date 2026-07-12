@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
-class StudentMiddleware
+use Core\MiddlewareInterface;
+
+
+class StudentMiddleware implements MiddlewareInterface
 {
     public function handle()
     {

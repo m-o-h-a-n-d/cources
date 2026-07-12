@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
-class AdminMiddleware
+use Core\MiddlewareInterface;
+
+class AdminMiddleware implements MiddlewareInterface
 {
     public function handle()
     {

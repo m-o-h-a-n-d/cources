@@ -78,28 +78,38 @@ class AuthController
     }
 
     public function logout()
-    {
-        $_SESSION = [];
+{
+    $isAdmin = isset($_SESSION['auth']) && $_SESSION['auth']['role'] === 'admin';
+    $isStudent = isset($_SESSION['auth']) && $_SESSION['auth']['role'] === 'student';
 
-        if (ini_get('session.use_cookies')) {
-            $params = session_get_cookie_params();
+    $_SESSION = [];
 
-            setcookie(
-                session_name(),
-                '',
-                time() - 42000,
-                $params['path'],
-                $params['domain'],
-                $params['secure'],
-                $params['httponly']
-            );
-        }
+    if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
 
-        session_destroy();
-
-        header('Location: /student/login');
-        exit;
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly']
+        );
     }
+
+    session_destroy();
+
+    if ($isAdmin) {
+        header('Location: /admin/login');
+    } elseif ($isStudent) {
+        header('Location: /student/login');
+    } else {
+        header('Location: /');
+    }
+
+    exit;
+}
 
     private function isAuthenticatedAs(string $role): bool
     {

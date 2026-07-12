@@ -25,6 +25,8 @@ abstract class Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+   
+
 
     public static function find($id)
     {

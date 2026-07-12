@@ -24,10 +24,7 @@ include base_path('resources/views/components/head.php');
             <input type="password" name="password" class="form-control" placeholder="123456" required>
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="studentRemember">
-                <label class="form-check-label" for="studentRemember">Remember Me</label>
-            </div>
+           
             <a href="#" class="text-primary small">Forgot Password?</a>
         </div>
         <button class="btn btn-brand w-100" type="submit">Login as Student</button>

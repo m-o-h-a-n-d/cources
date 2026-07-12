@@ -101,7 +101,7 @@ class StudentController{
             exit;
         }
 
-                $payload = [
+            $payload = [
             'student_id' => trim($_POST['student_id'] ?? ''),
             'full_name' => trim($_POST['full_name'] ?? ''),
             'email' => trim($_POST['email'] ?? ''),
