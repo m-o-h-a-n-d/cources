@@ -8,6 +8,7 @@ class Course extends Model
 {
 protected static string $table = 'courses';
 
+
 public static function allWithDepartment()
 {
     $stmt = static::$pdo->prepare(

@@ -40,7 +40,7 @@ class StudentCoursesController
         $_SESSION['success'] =
             'Course enrolled successfully 🎉';
 
-        header('Location: /student/courses');
+        header('Location: /student');
         exit;
     }
 }
