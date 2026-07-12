@@ -87,6 +87,8 @@ abstract class Model
         );  
     }
 
+    
+
     public static function delete($id)
     {
         $stmt = static::$pdo->prepare(

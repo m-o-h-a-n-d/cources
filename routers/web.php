@@ -6,13 +6,14 @@ use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\Student\CoursesController;
 
 $router->get('/', [FrontendController::class, 'landing']);
 $router->get('/landing', [FrontendController::class, 'landing']);
 $router->get('/login', [FrontendController::class, 'login']);
 $router->get('/student', [FrontendController::class, 'studentDashboard']);
 $router->get('/dashboard/student', [FrontendController::class, 'studentDashboard']);
-$router->get('/courses', [FrontendController::class, 'courses']);
+$router->get('/courses', [CoursesController::class, 'index']);
 $router->get('/courses/details', [FrontendController::class, 'courseDetails']);
 $router->get('/profile', [FrontendController::class, 'profile']);
 $router->get('/my-courses', [FrontendController::class, 'myCourses']);

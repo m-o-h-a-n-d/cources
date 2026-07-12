@@ -118,6 +118,7 @@
     const studentCurrentImage = document.getElementById("studentCurrentImage");
     const studentStudentId = document.getElementById("studentStudentId");
     const studentFullName = document.getElementById("studentFullName");
+    const studentEmail = document.getElementById("studentEmail");
     const studentAge = document.getElementById("studentAge");
     const studentGender = document.getElementById("studentGender");
     const studentDepId = document.getElementById("studentDepId");
@@ -138,6 +139,7 @@
       if (studentModalSubmit) {
         studentModalSubmit.textContent = "Save Student";
       }
+      if (studentEmail) studentEmail.value = "";
       if (studentRecordId) studentRecordId.value = "";
       if (studentCurrentImage) studentCurrentImage.value = "";
       if (studentStudentId) studentStudentId.value = "";
@@ -195,6 +197,7 @@
         if (studentCurrentImage)
           studentCurrentImage.value = dataset.image || "";
         if (studentStudentId) studentStudentId.value = dataset.studentId || "";
+        if (studentEmail) studentEmail.value = dataset.email || "";
         if (studentFullName) studentFullName.value = dataset.fullName || "";
         if (studentAge) studentAge.value = dataset.age || "";
         if (studentGender) studentGender.value = dataset.gender || "";
