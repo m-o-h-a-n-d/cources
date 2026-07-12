@@ -1,0 +1,35 @@
+:root {
+  --color-primary: #2563eb;
+  --color-secondary: #0f172a;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --gradient-brand: linear-gradient(
+    135deg,
+    #2563eb 0%,
+    #1d4ed8 50%,
+    #0f172a 100%
+  );
+  --gradient-soft: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  --shadow-soft: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --shadow-hover: 0 20px 36px rgba(37, 99, 235, 0.18);
+  --radius-lg: 1rem;
+  --radius-md: 0.75rem;
+  --radius-sm: 0.5rem;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0b1220;
+  --color-surface: #111a2c;
+  --color-text: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-border: #243043;
+  --gradient-soft: linear-gradient(180deg, #111a2c 0%, #0b1220 100%);
+  --shadow-soft: 0 16px 35px rgba(2, 6, 23, 0.45);
+  --shadow-hover: 0 20px 40px rgba(37, 99, 235, 0.25);
+}
