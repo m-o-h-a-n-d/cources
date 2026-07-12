@@ -7,7 +7,6 @@ use Core\Container;
 require '../vendor/autoload.php';
 
 
-die();
 if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
