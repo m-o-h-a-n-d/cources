@@ -1,0 +1,9 @@
+kind: wasmer.io/App.v0
+name: cources
+package: .
+annotations:
+  shipitcli.com/config:
+    name: cources
+    phpix: true
+    public_dir: public
+    use_composer: true
