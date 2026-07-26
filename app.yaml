@@ -5,5 +5,5 @@ annotations:
   shipitcli.com/config:
     name: cources
     phpix: true
-    public_dir: public
+    public_dir: .
     use_composer: true
