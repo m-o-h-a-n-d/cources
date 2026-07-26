@@ -5,96 +5,54 @@ namespace Core;
 class Router
 {
     protected array $routes = [];
-
     protected array $groupMiddlewares = [];
 
-    public function __construct(
-        protected Container $container
-    ) {
+    public function __construct(protected Container $container)
+    {
     }
 
-    public function get(
-        string $uri,
-        array $action,
-        array $middlewares = []
-    ): void {
-        $this->addRoute(
-            'GET',
-            $uri,
-            $action,
-            $middlewares
-        );
+    public function get(string $uri, array $action): void
+    {
+        $this->addRoute('GET', $uri, $action);
     }
 
-    public function post(
-        string $uri,
-        array $action,
-        array $middlewares = []
-    ): void {
-        $this->addRoute(
-            'POST',
-            $uri,
-            $action,
-            $middlewares
-        );
+    public function post(string $uri, array $action): void
+    {
+        $this->addRoute('POST', $uri, $action);
     }
 
-    public function put(
-        string $uri,
-        array $action,
-        array $middlewares = []
-    ): void {
-        $this->addRoute(
-            'PUT',
-            $uri,
-            $action,
-            $middlewares
-        );
+    public function put(string $uri, array $action): void
+    {
+        $this->addRoute('PUT', $uri, $action);
     }
 
-    public function delete(
-        string $uri,
-        array $action,
-        array $middlewares = []
-    ): void {
-        $this->addRoute(
-            'DELETE',
-            $uri,
-            $action,
-            $middlewares
-        );
+    public function delete(string $uri, array $action): void
+    {
+        $this->addRoute('DELETE', $uri, $action);
     }
 
-    protected function addRoute(
-        string $method,
-        string $uri,
-        array $action,
-        array $middlewares = []
-    ): void {
-        $middlewares = array_merge(
-            $this->groupMiddlewares,
-            $middlewares
-        );
-
-        $this->routes[$method][$uri] = [
-            'action' => $action,
-            'middlewares' => $middlewares,
-        ];
-    }
-
-    public function middleware(
-        string|array $middlewares
-    ): self {
-        $this->groupMiddlewares = (array) $middlewares;
-
+    public function middleware(string $middleware): static
+    {
+        $this->groupMiddlewares[] = $middleware;
         return $this;
     }
 
-    public function group(
-        callable $callback
-    ): void {
-        $callback($this);
+    protected function addRoute(string $method, string $uri, array $action): void
+    {
+        $normalizedUri = '/' . trim($uri, '/');
+        if ($normalizedUri !== '/' && str_ends_with($normalizedUri, '/')) {
+            $normalizedUri = rtrim($normalizedUri, '/');
+        }
 
+        $this->routes[$method][$normalizedUri] = [
+            'action' => $action,
+            'middlewares' => $this->groupMiddlewares,
+        ];
+    }
+
+    public function group(callable $callback): void
+    {
+        $callback($this);
         $this->groupMiddlewares = [];
     }
 
@@ -102,7 +60,12 @@ class Router
         string $uri,
         string $method
     ) {
-        if (!isset($this->routes[$method][$uri])) {
+        $normalizedUri = '/' . trim($uri, '/');
+        if ($normalizedUri !== '/' && str_ends_with($normalizedUri, '/')) {
+            $normalizedUri = rtrim($normalizedUri, '/');
+        }
+
+        if (!isset($this->routes[$method][$normalizedUri])) {
             http_response_code(404);
 
             if (function_exists('view')) {
@@ -113,7 +76,7 @@ class Router
             die('404 Not Found');
         }
 
-        $route = $this->routes[$method][$uri];
+        $route = $this->routes[$method][$normalizedUri];
 
         foreach ($route['middlewares'] as $middleware) {
             $instance = $this->container->make(
