@@ -19,7 +19,7 @@ class JwtAuthController
     public function studentLoginForm()
     {
         if (isset($_SESSION['auth']) && $_SESSION['auth']['role'] === 'student') {
-            header('Location: /student');
+            header('Location: /dashboard/student');
             exit;
         }
 
@@ -96,17 +96,28 @@ class JwtAuthController
 
         setcookie('jwt_token', $jwtToken, time() + $ttlSeconds, '/', '', false, true);
 
-        return $this->jsonResponse(true, 'تم تسجيل الدخول بنجاح', [
-            'access_token'   => $jwtToken,
-            'remember_token' => $rememberToken,
-            'token_type'     => 'Bearer',
-            'expires_in'     => $ttlSeconds,
-            'user'           => [
-                'id'    => $userId,
-                'email' => $student['email'],
-                'role'  => $userRole,
-            ]
-        ]);
+        $_SESSION['auth'] = [
+            'id'    => $userId,
+            'email' => $student['email'],
+            'role'  => $userRole,
+        ];
+
+        if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
+            return $this->jsonResponse(true, 'تم تسجيل الدخول بنجاح', [
+                'access_token'   => $jwtToken,
+                'remember_token' => $rememberToken,
+                'token_type'     => 'Bearer',
+                'expires_in'     => $ttlSeconds,
+                'user'           => [
+                    'id'    => $userId,
+                    'email' => $student['email'],
+                    'role'  => $userRole,
+                ]
+            ]);
+        }
+
+        header('Location: /dashboard/student');
+        exit;
     }
 
     public function adminLogin()
@@ -167,17 +178,28 @@ class JwtAuthController
 
         setcookie('jwt_token', $jwtToken, time() + $ttlSeconds, '/', '', false, true);
 
-        return $this->jsonResponse(true, 'تم تسجيل دخول الأدمن بنجاح', [
-            'access_token'   => $jwtToken,
-            'remember_token' => $rememberToken,
-            'token_type'     => 'Bearer',
-            'expires_in'     => $ttlSeconds,
-            'user'           => [
-                'id'    => $userId,
-                'email' => $admin['email'],
-                'role'  => $userRole,
-            ]
-        ]);
+        $_SESSION['auth'] = [
+            'id'    => $userId,
+            'email' => $admin['email'],
+            'role'  => $userRole,
+        ];
+
+        if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
+            return $this->jsonResponse(true, 'تم تسجيل دخول الأدمن بنجاح', [
+                'access_token'   => $jwtToken,
+                'remember_token' => $rememberToken,
+                'token_type'     => 'Bearer',
+                'expires_in'     => $ttlSeconds,
+                'user'           => [
+                    'id'    => $userId,
+                    'email' => $admin['email'],
+                    'role'  => $userRole,
+                ]
+            ]);
+        }
+
+        header('Location: /admin/dashboard');
+        exit;
     }
 
     public function logout()

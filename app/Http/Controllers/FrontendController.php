@@ -10,9 +10,15 @@ class FrontendController
         return view('admin/dashboard');
     }
 
+    public function studentDashboard()
+    {
+        $this->requireAuth('student');
+        return view('dashboard/student');
+    }
+
     public function landing(){
         return view('landing');
-        }
+    }
 
     private function requireAuth(string $role): void
     {
