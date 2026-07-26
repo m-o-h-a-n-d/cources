@@ -31,18 +31,37 @@ if (! function_exists('config')) {
 }
 
 if (! function_exists('env')) {
+    /**
+     * Get the value of an environment variable from $_ENV, $_SERVER, getenv(), or fallback to default.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
     function env(string $key, mixed $default = null): mixed
     {
         $value = $_ENV[$key] ?? $_SERVER[$key] ?? null;
 
         if ($value === null) {
+            $getenvVal = getenv($key);
+            if ($getenvVal !== false) {
+                $value = $getenvVal;
+            }
+        }
+
+        if ($value === null) {
             return $default;
         }
 
-        return match (strtolower($value)) {
-            'true' => true,
-            'false' => false,
-            'null' => null,
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return match (strtolower((string) $value)) {
+            'true', '(true)' => true,
+            'false', '(false)' => false,
+            'null', '(null)' => null,
+            'empty', '(empty)' => '',
             default => $value,
         };
     }

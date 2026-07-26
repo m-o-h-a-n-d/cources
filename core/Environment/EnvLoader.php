@@ -8,7 +8,7 @@ class EnvLoader
     {
         // .env is optional.
         // In production, environment variables may be provided
-        // directly by the hosting platform.
+        // directly by the hosting platform (Apache / Nginx / FastCGI / Server Env).
         if (! file_exists($filePath)) {
             return;
         }
@@ -24,7 +24,8 @@ class EnvLoader
             // Skip empty lines and comments
             if (
                 $line === '' ||
-                str_starts_with($line, '#')
+                str_starts_with($line, '#') ||
+                str_starts_with($line, '//')
             ) {
                 continue;
             }
@@ -51,9 +52,11 @@ class EnvLoader
             $value = trim($value, "\"'");
 
             // Don't overwrite environment variables
-            // already provided by the server/platform.
-            if (! isset($_ENV[$key])) {
+            // already provided by the server/platform via getenv(), $_ENV, or $_SERVER.
+            if (! isset($_ENV[$key]) && getenv($key) === false) {
                 $_ENV[$key] = $value;
+                $_SERVER[$key] = $value;
+                putenv("{$key}={$value}");
             }
         }
     }
