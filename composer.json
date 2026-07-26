@@ -1,0 +1,17 @@
+{
+    "name": "mohanad/student-course-management",
+    "description": "Native PHP CRUD Project",
+    "type": "project",
+    "require": {
+        "php": "^8.5"
+    },
+    "autoload": {
+        "files": [
+        "app/Helpers/view.php"
+        ],
+        "psr-4": {
+            "Core\\": "core/",
+            "App\\": "app/"
+        }
+    }
+}
