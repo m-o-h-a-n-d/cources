@@ -23,10 +23,14 @@ class Kernel
             require base_path('routers/web.php');
         }
 
-        $uri = parse_url(
-            $_SERVER['REQUEST_URI'] ?? '/',
-            PHP_URL_PATH
-        );
+       $uri = $_SERVER['PATH_INFO']
+    ?? preg_replace(
+        '#^/index\.php#',
+        '',
+        parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH)
+    );
+
+$uri = $uri ?: '/';
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
         $router->dispatch($uri, $method);
