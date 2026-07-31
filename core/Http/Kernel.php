@@ -27,7 +27,6 @@ class Kernel
             $_SERVER['REQUEST_URI'] ?? '/',
             PHP_URL_PATH
         );
-
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
         $router->dispatch($uri, $method);
