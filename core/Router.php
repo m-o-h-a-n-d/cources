@@ -56,10 +56,8 @@ class Router
         $this->groupMiddlewares = [];
     }
 
-    public function dispatch(
-        string $uri,
-        string $method
-    ) {
+    public function dispatch(string $uri,string $method) 
+    {
         $normalizedUri = '/' . trim($uri, '/');
         if ($normalizedUri !== '/' && str_ends_with($normalizedUri, '/')) {
             $normalizedUri = rtrim($normalizedUri, '/');

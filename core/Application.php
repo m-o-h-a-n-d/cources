@@ -2,17 +2,22 @@
 
 namespace Core;
 
+use App\Providers\ServiceProvider;
 use Core\Config\ConfigLoader;
 use Core\Config\ConfigManager;
 use Core\Environment\EnvLoader;
-use App\Repository\StudentRepositoryInterface;
-use App\Repository\StudentRepository;
+use Core\Http\Kernel;
 
 class Application
 {
     protected ConfigManager $config;
 
     protected Container $container;
+
+    /**
+     * @var ServiceProvider[]
+     */
+    protected array $providers = [];
 
     public function __construct()
     {
@@ -22,7 +27,11 @@ class Application
 
         $this->loadContainer();
 
-        $this->registerCoreServices();
+        $this->startSession();
+
+        $this->registerProviders();
+
+        $this->bootProviders();
     }
 
     protected function loadEnvironment(): void
@@ -50,36 +59,36 @@ class Application
         $this->container = new Container();
     }
 
-    protected function registerCoreServices(): void
+    protected function startSession(): void
     {
-        $this->container->instance(
-            ConfigManager::class,
-            $this->config
-        );
-
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+    }
 
-        $dbConfig = $this->config->get('database');
-        if ($dbConfig) {
-            $db = new Database($dbConfig);
-            $this->container->instance(Database::class, $db);
+    protected function registerProviders(): void
+    {
+        $providers = $this->config->get('app.providers', []);
 
-            if (class_exists(Model::class)) {
-                Model::setConnection($db->connection());
-            }
+        foreach ($providers as $providerClass) {
+
+            /** @var ServiceProvider $provider */
+            $provider = new $providerClass(
+                $this->container,
+                $this->config
+            );
+
+            $provider->register();
+
+            $this->providers[] = $provider;
         }
+    }
 
-        $this->container->bind(
-            StudentRepositoryInterface::class,
-            StudentRepository::class
-        );
-
-        $this->container->instance(
-            Router::class,
-            new Router($this->container)
-        );
+    protected function bootProviders(): void
+    {
+        foreach ($this->providers as $provider) {
+            $provider->boot();
+        }
     }
 
     public function config(): ConfigManager
@@ -92,18 +101,12 @@ class Application
         return $this->container;
     }
 
-    public function run(): void
+    public function handleRequest(): void
     {
-        /** @var Router $router */
-        $router = $this->container->make(Router::class);
-
-        if (file_exists(base_path('routers/web.php'))) {
-            require base_path('routers/web.php');
-        }
-
-        $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-
-        $router->dispatch($uri, $method);
+        $kernel = new Kernel($this);
+    
+        $kernel->handle();
     }
+
+   
 }
