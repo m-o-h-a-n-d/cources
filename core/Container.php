@@ -8,17 +8,27 @@ class Container
 
     protected array $instances = [];
 
-    public function bind(
-        string $abstract,
-        string $concrete
-    ): void {
+    //  abstract => concrete   
+
+    //  abstract :  Interface or class name 
+
+    // concrete :  Class name or closure that returns an instance of the class
+
+
+    /*
+
+    {
+        "studentInterface"=> "studentRepository"
+    }
+
+     */
+    public function bind(string $abstract,string $concrete): void
+        {
         $this->bindings[$abstract] = $concrete;
     }
 
-    public function instance(
-        string $abstract,
-        object $instance
-    ): void {
+    public function instance(string $abstract,object $instance): void
+    {
         $this->instances[$abstract] = $instance;
     }
 
@@ -34,7 +44,8 @@ class Container
             $concrete = $abstract;
         }
 
-        $reflection = new \ReflectionClass($concrete);
+
+        $reflection = new \ReflectionClass($concrete); //  تخلي عن اسم الواجهة أو الكلاس وتحويله إلى كلاس يمكن إنشاء نسخة منه
 
         $constructor = $reflection->getConstructor();
 
