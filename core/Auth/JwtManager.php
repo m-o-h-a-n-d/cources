@@ -8,7 +8,7 @@ class JwtManager
 
     public function __construct(?string $secret = null)
     {
-        $this->secret = $secret ?: env('JWT_SECRET', 'antigravity_default_secure_jwt_secret_key_2026');
+        $this->secret = $secret ?: env('JWT_SECRET', 'default_secure_jwt_secret_key_2026');
     }
 
     /**
