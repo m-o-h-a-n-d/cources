@@ -4,11 +4,11 @@ namespace Core\Config;
 
 class ConfigManager
 {
-    protected array $items = [];
+   
 
-    public function __construct(array $items = [])
+    public function __construct( protected array $items = [])
     {
-        $this->items = $items;
+        
     }
 
     public function get(string $key, mixed $default = null): mixed
@@ -26,6 +26,7 @@ class ConfigManager
                 return $default;
             }
         }
+        
 
         return $array;
     }
